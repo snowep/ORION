@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { withPigment } = require('@pigment-css/nextjs-plugin');
+
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@orion/contracts', '@orion/ui'],
@@ -12,4 +14,4 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+module.exports = withPigment(nextConfig);

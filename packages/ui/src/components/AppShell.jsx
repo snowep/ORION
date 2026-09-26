@@ -28,30 +28,41 @@ export function AppShell({ children }) {
 
   const DrawerWidth = collapsed ? 72 : 260;
 
+  const drawerBoxSx = { display: 'flex', flexDirection: 'column', height: '100%' };
+  const logoBoxSx = { p: 2, display: 'flex', alignItems: 'center', gap: 1, borderBottom: 1, borderColor: 'divider' };
+  const logoTypographySx = { fontWeight: 700, color: 'primary.main', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' };
+  const listSx = { flex: 1, px: 1, py: 1 };
+  const dividerSx = { mx: 1 };
+  const settingsListSx = { px: 1, pb: 1 };
+  const settingsItemSx = { borderRadius: 2, px: 1.5, py: 1 };
+  const settingsIconSx = { minWidth: 40, justifyContent: 'center' };
+
   const drawer = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1, borderBottom: 1, borderColor: 'divider' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+    <Box sx={drawerBoxSx}>
+      <Box sx={logoBoxSx}>
+        <Typography variant="h6" sx={logoTypographySx}>
           ORION
         </Typography>
       </Box>
-      <List sx={{ flex: 1, px: 1, py: 1 }} component="nav" aria-label="Main navigation">
+      <List sx={listSx} component="nav" aria-label="Main navigation">
         {navigation.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
+          const listItemSx = {
+            borderRadius: 2,
+            mb: 0.5,
+            px: 1.5,
+            py: 1,
+            ...(isActive && { backgroundColor: 'primary.main', color: 'primary.contrastText', '& .MuiListItemIcon-root': { color: 'primary.contrastText' } }),
+            '&:hover': { backgroundColor: isActive ? 'primary.dark' : 'action.hover' }
+          };
+          const linkStyle = { textDecoration: 'none', color: 'inherit' };
           return (
-            <Link key={item.label} href={item.href} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link key={item.label} href={item.href} style={linkStyle}>
               <ListItem
                 button
                 selected={isActive}
-                sx={{
-                  borderRadius: 2,
-                  mb: 0.5,
-                  px: 1.5,
-                  py: 1,
-                  ...(isActive && { backgroundColor: 'primary.main', color: 'primary.contrastText', '& .MuiListItemIcon-root': { color: 'primary.contrastText' } }),
-                  '&:hover': { backgroundColor: isActive ? 'primary.dark' : 'action.hover' }
-                }}
+                sx={listItemSx}
                 aria-current={isActive ? 'page' : undefined}
               >
                 <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
@@ -63,11 +74,11 @@ export function AppShell({ children }) {
           );
         })}
       </List>
-      <Divider sx={{ mx: 1 }} />
-      <List sx={{ px: 1, pb: 1 }}>
+      <Divider sx={dividerSx} />
+      <List sx={settingsListSx}>
         <Link href="/settings" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <ListItem button sx={{ borderRadius: 2, px: 1.5, py: 1 }}>
-            <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
+          <ListItem button sx={settingsItemSx}>
+            <ListItemIcon sx={settingsIconSx}>
               <Settings fontSize="medium" />
             </ListItemIcon>
             {!collapsed && <ListItemText primary="Settings" />}
@@ -77,16 +88,23 @@ export function AppShell({ children }) {
     </Box>
   );
 
+  const mobileBoxSx = { display: 'flex', minHeight: '100vh' };
+  const mobileAppBarSx = { backgroundColor: 'background.paper', borderBottom: 1, borderColor: 'divider' };
+  const mobileTypographySx = { fontWeight: 700, color: 'primary.main' };
+  const mobileIconButtonSx = { mr: 2 };
+  const mobileDrawerSx = { display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { width: 260, boxSizing: 'border-box' } };
+  const mobileMainSx = { pt: 8, px: 3, pb: 3, flexGrow: 1 };
+
   if (isMobile) {
     return (
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Box sx={mobileBoxSx}>
         <CssBaseline />
-        <AppBar position="fixed" sx={{ backgroundColor: 'background.paper', borderBottom: 1, borderColor: 'divider' }}>
+        <AppBar position="fixed" sx={mobileAppBarSx}>
           <Toolbar>
-            <IconButton color="inherit" aria-label="Open navigation" edge="start" sx={{ mr: 2 }} onClick={() => setMobileOpen(!mobileOpen)}>
+            <IconButton color="inherit" aria-label="Open navigation" edge="start" sx={mobileIconButtonSx} onClick={() => setMobileOpen(!mobileOpen)}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>ORION</Typography>
+            <Typography variant="h6" sx={mobileTypographySx}>ORION</Typography>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -94,36 +112,43 @@ export function AppShell({ children }) {
           open={mobileOpen}
           onClose={() => setMobileOpen(false)}
           ModalProps={{ keepMounted: true }}
-          sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { width: 260, boxSizing: 'border-box' } }}
+          sx={mobileDrawerSx}
         >
           {drawer}
         </Drawer>
-        <Box component="main" sx={{ pt: 8, px: 3, pb: 3, flexGrow: 1 }}>
+        <Box component="main" sx={mobileMainSx}>
           {children}
         </Box>
       </Box>
     );
   }
 
+  const desktopBoxSx = { display: 'flex', minHeight: '100vh' };
+  const drawerSx = { width: DrawerWidth, flexShrink: 0, '& .MuiDrawer-paper': { width: DrawerWidth, boxSizing: 'border-box', borderRight: '1px solid', borderColor: 'divider', backgroundColor: 'background.paper', overflowX: 'hidden' } };
+  const mainSx = { flexGrow: 1, minHeight: '100vh', backgroundColor: 'background.default', ml: DrawerWidth + 'px' };
+  const appBarSx = { width: `calc(100% - ${DrawerWidth}px)`, ml: DrawerWidth + 'px', backgroundColor: 'background.paper', borderBottom: 1, borderColor: 'divider' };
+  const toolbarButtonSx = {};
+  const contentBoxSx = { pt: 8, px: 4, pb: 4 };
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={desktopBoxSx}>
       <CssBaseline />
       <Drawer
         variant="permanent"
         open
-        sx={{ width: DrawerWidth, flexShrink: 0, '& .MuiDrawer-paper': { width: DrawerWidth, boxSizing: 'border-box', borderRight: '1px solid', borderColor: 'divider', backgroundColor: 'background.paper', overflowX: 'hidden' } }}
+        sx={drawerSx}
       >
         {drawer}
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, minHeight: '100vh', backgroundColor: 'background.default', ml: DrawerWidth + 'px' }}>
-        <AppBar position="fixed" sx={{ width: `calc(100% - ${DrawerWidth}px)`, ml: DrawerWidth + 'px', backgroundColor: 'background.paper', borderBottom: 1, borderColor: 'divider' }}>
+      <Box component="main" sx={mainSx}>
+        <AppBar position="fixed" sx={appBarSx}>
           <Toolbar>
-            <IconButton onClick={() => setCollapsed(!collapsed)} edge="start" color="inherit" aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}>
+            <IconButton onClick={() => setCollapsed(!collapsed)} edge="start" color="inherit" aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'} sx={toolbarButtonSx}>
               <ChevronLeft />
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Box sx={{ pt: 8, px: 4, pb: 4 }}>
+        <Box sx={contentBoxSx}>
           {children}
         </Box>
       </Box>

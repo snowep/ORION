@@ -421,7 +421,6 @@ async function runMigrations() {
   
   // Promisify database methods
   const run = promisify(db.run.bind(db));
-  const get = promisify(db.get.bind(db));
   const all = promisify(db.all.bind(db));
   const exec = promisify(db.exec.bind(db));
   
@@ -546,7 +545,7 @@ switch (command) {
       process.exit(1);
     });
     break;
-  case 'down':
+  case 'down': {
     const version = parseInt(process.argv[3], 10);
     if (!version) {
       console.error('Usage: node migrate.js down <version>');
@@ -557,6 +556,7 @@ switch (command) {
       process.exit(1);
     });
     break;
+  }
   case 'status':
     status().catch(err => {
       console.error('[Migration] Status failed:', err.message);

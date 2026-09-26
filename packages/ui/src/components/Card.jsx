@@ -1,5 +1,5 @@
 import { Card as MuiCard, CardContent, CardHeader, CardActions, Box, IconButton } from '@mui/material';
-import { ChevronDown, ChevronUp } from '@mui/icons-material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { useState } from 'react';
 
 /**
@@ -16,7 +16,7 @@ export function Card({ title, subtitle, children, actions, expandable, defaultEx
           subheader={subtitle}
           action={
             <IconButton onClick={(e) => { e.stopPropagation(); setExpanded(true); }} size="small" aria-label="Expand">
-              <ChevronDown />
+              <ExpandMore />
             </IconButton>
           }
         />
@@ -35,7 +35,7 @@ export function Card({ title, subtitle, children, actions, expandable, defaultEx
               {actions}
               {expandable && (
                 <IconButton onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }} size="small" aria-label={expanded ? 'Collapse' : 'Expand'}>
-                  {expanded ? <ChevronUp /> : <ChevronDown />}
+                  {expanded ? <ExpandLess /> : <ExpandMore />}
                 </IconButton>
               )}
             </Box>
@@ -52,5 +52,6 @@ export function Card({ title, subtitle, children, actions, expandable, defaultEx
  * Minimal card wrapper.
  */
 export function SimpleCard({ children, sx, ...props }) {
-  return <MuiCard {...props} sx={{ ...sx }}>{children}</MuiCard>;
+  const cardSx = sx;
+  return <MuiCard {...props} sx={cardSx}>{children}</MuiCard>;
 }

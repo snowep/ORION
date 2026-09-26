@@ -4,7 +4,7 @@
   "description": "ORION Developer Rules and Conventions",
   "rules": {
     "general": [
-      "JavaScript/JSX only. No TypeScript. No Python.",
+      "JavaScript/JSX or TypeScript/TSX.",
       "React + Next.js + Node.js + Express + MUI.",
       "Prefer free/open-source/self-hostable dependencies.",
       "OpenClaw is not ORION. Open WebUI is not ORION.",

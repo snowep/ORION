@@ -1,5 +1,5 @@
 import { Chip } from '@mui/material';
-import { CheckCircle, HourglassTop, ErrorOutline, Warning, Info, Cancel, PauseCircle, PlayCircle } from '@mui/icons-material';
+import { CheckCircle, HourglassTop, ErrorOutlined, Warning, Info, Cancel, PauseCircle, PlayCircle } from '@mui/icons-material';
 
 /**
  * Human-facing status words (ORION_UI.md §16) — no technical labels.
@@ -9,7 +9,7 @@ const statusConfig = {
   waiting_approval: { label: 'Waiting for approval', color: 'warning', icon: <HourglassTop fontSize="small" />, variant: 'outlined' },
   needs_attention: { label: 'Needs attention', color: 'error', icon: <Warning fontSize="small" />, variant: 'outlined' },
   completed: { label: 'Completed', color: 'success', icon: <CheckCircle fontSize="small" />, variant: 'filled' },
-  could_not_finish: { label: 'Could not finish', color: 'error', icon: <ErrorOutline fontSize="small" />, variant: 'outlined' },
+  could_not_finish: { label: 'Could not finish', color: 'error', icon: <ErrorOutlined fontSize="small" />, variant: 'outlined' },
   conflict: { label: 'Found a conflict', color: 'warning', icon: <Warning fontSize="small" />, variant: 'filled' },
   ready_to_review: { label: 'Ready to review', color: 'info', icon: <Info fontSize="small" />, variant: 'outlined' },
   paused: { label: 'Paused', color: 'default', icon: <PauseCircle fontSize="small" />, variant: 'outlined' },

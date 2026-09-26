@@ -25,7 +25,6 @@ Before editing anything:
 
 Rules:
 
-- JavaScript/JSX only.
 - No Python.
 - React + Next.js + Node.js + Express + MUI.
 - Prefer free/open-source/self-hostable dependencies.
@@ -126,8 +125,8 @@ Build:
 - filesystem adapter
 - safe path resolution
 - Markdown read/write
-- ORION_HOME
-- ORION_WORKSPACE_ROOT
+- ORION\_HOME
+- ORION\_WORKSPACE\_ROOT
 - atomic writes
 
 Test:

@@ -1,8 +1,8 @@
 import { Alert, AlertTitle, Box, Typography, Button } from '@mui/material';
-import { ErrorOutline, Warning, Info, CheckCircle } from '@mui/icons-material';
+import { ErrorOutlined, Warning, Info, CheckCircle } from '@mui/icons-material';
 
 const severityConfig = {
-  error: { icon: <ErrorOutline />, color: 'error' },
+  error: { icon: <ErrorOutlined />, color: 'error' },
   warning: { icon: <Warning />, color: 'warning' },
   info: { icon: <Info />, color: 'info' },
   success: { icon: <CheckCircle />, color: 'success' }

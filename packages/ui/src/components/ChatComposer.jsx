@@ -1,5 +1,5 @@
 import { Box, TextField, IconButton, Button, Chip, Avatar, Tooltip, Popover, Typography, useTheme } from '@mui/material';
-import { Send, AttachFile, Mic, Face, KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import { Send, AttachFile, Mic, Face, KeyboardArrowUp } from '@mui/icons-material';
 import { useState, useRef, useEffect } from 'react';
 
 /**
@@ -63,10 +63,35 @@ export function ChatComposer({
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const rootBoxSx = { borderTop: 1, borderColor: 'divider', backgroundColor: 'background.paper', p: 2 };
+  const attachmentsBoxSx = { display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 };
+  const mainBoxSx = { display: 'flex', alignItems: 'flex-end', gap: 1 };
+  const flexBoxSx = { flex: 1, display: 'flex', flexDirection: 'column', gap: 0.5 };
+  const textFieldSx = {
+    '& .MuiInputBase-root': {
+      borderRadius: 2,
+      backgroundColor: 'background.default',
+      border: '1px solid',
+      borderColor: 'divider',
+      '&:hover': { borderColor: 'primary.main' },
+      '&.Mui-focused': { borderColor: 'primary.main', boxShadow: `0 0 0 2px ${theme.palette.primary.light}40` }
+    }
+  };
+  const sendButtonSx = { minWidth: 48, height: 48, borderRadius: '50%', padding: 0 };
+  const popoverSx = { minWidth: 240 };
+  const personaHeaderSx = { px: 1, py: 0.5, fontWeight: 600, display: 'block' };
+  const personaItemSx = (isSelected) => ({
+    display: 'flex', alignItems: 'center', gap: 1.5, px: 1.5, py: 1, borderRadius: 1, cursor: 'pointer',
+    backgroundColor: isSelected ? 'primary.light' : 'transparent',
+    color: isSelected ? 'primary.contrastText' : 'inherit',
+    '&:hover': { backgroundColor: isSelected ? 'primary.main' : 'action.hover' },
+    width: '100%', border: 'none', fontFamily: 'inherit', fontSize: '0.875rem'
+  });
+
   return (
-    <Box sx={{ borderTop: 1, borderColor: 'divider', backgroundColor: 'background.paper', p: 2 }}>
+    <Box sx={rootBoxSx}>
       {attachments.length > 0 && (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
+        <Box sx={attachmentsBoxSx}>
           {attachments.map((file, index) => (
             <Chip
               key={index}
@@ -81,7 +106,7 @@ export function ChatComposer({
         </Box>
       )}
 
-      <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 1 }}>
+      <Box sx={mainBoxSx}>
         <input type="file" multiple onChange={handleFileChange} style={{ display: 'none' }} ref={fileInputRef} />
         <Tooltip title="Attach file">
           <IconButton size="small" disabled={disabled} aria-label="Attach file" onClick={() => fileInputRef.current?.click()}>
@@ -103,7 +128,7 @@ export function ChatComposer({
           </Tooltip>
         )}
 
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+        <Box sx={flexBoxSx}>
           <TextField
             multiline
             rows={1}
@@ -120,16 +145,7 @@ export function ChatComposer({
               inputRef: textareaRef,
               style: { padding: '8px 12px' }
             }}
-            sx={{
-              '& .MuiInputBase-root': {
-                borderRadius: 2,
-                backgroundColor: 'background.default',
-                border: '1px solid',
-                borderColor: 'divider',
-                '&:hover': { borderColor: 'primary.main' },
-                '&.Mui-focused': { borderColor: 'primary.main', boxShadow: `0 0 0 2px ${theme.palette.primary.light}40` }
-              }
-            }}
+            sx={textFieldSx}
           />
         </Box>
 
@@ -142,7 +158,7 @@ export function ChatComposer({
               onClick={handleSend}
               disabled={disabled || (!message.trim() && attachments.length === 0)}
               aria-label="Send message"
-              sx={{ minWidth: 48, height: 48, borderRadius: '50%', padding: 0 }}
+              sx={sendButtonSx}
             >
               <Send fontSize="medium" />
             </Button>
@@ -163,14 +179,14 @@ export function ChatComposer({
           onClose={() => setShowPersonaMenu(false)}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          sx={{ minWidth: 240 }}
+          sx={popoverSx}
         >
           <Box sx={{ p: 1 }}>
-            <Typography variant="caption" color="text.secondary" sx={{ px: 1, py: 0.5, fontWeight: 600, display: 'block' }}>Select Persona</Typography>
+            <Typography variant="caption" color="text.secondary" sx={personaHeaderSx}>Select Persona</Typography>
             <Box
               component="button"
               onClick={() => { onPersonaChange?.(''); setShowPersonaMenu(false); }}
-              sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 1.5, py: 1, borderRadius: 1, cursor: 'pointer', backgroundColor: !selectedPersonaId ? 'primary.light' : 'transparent', color: !selectedPersonaId ? 'primary.contrastText' : 'inherit', '&:hover': { backgroundColor: !selectedPersonaId ? 'primary.main' : 'action.hover' }, width: '100%', border: 'none', fontFamily: 'inherit', fontSize: '0.875rem' }}
+              sx={personaItemSx(!selectedPersonaId)}
             >
               None (Default)
             </Box>
@@ -179,7 +195,7 @@ export function ChatComposer({
                 key={p.id}
                 component="button"
                 onClick={() => { onPersonaChange?.(p.id); setShowPersonaMenu(false); }}
-                sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 1.5, py: 1, borderRadius: 1, cursor: 'pointer', backgroundColor: selectedPersonaId === p.id ? 'primary.light' : 'transparent', color: selectedPersonaId === p.id ? 'primary.contrastText' : 'inherit', '&:hover': { backgroundColor: selectedPersonaId === p.id ? 'primary.main' : 'action.hover' }, width: '100%', border: 'none', fontFamily: 'inherit', fontSize: '0.875rem' }}
+                sx={personaItemSx(selectedPersonaId === p.id)}
               >
                 {p.avatar ? <Avatar src={p.avatar} sx={{ width: 24, height: 24 }} /> : <Face fontSize="small" />}
                 {p.name}

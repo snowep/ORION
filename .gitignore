@@ -52,3 +52,4 @@ storage/workspace/
 # ORION specific
 COMMIT_HISTORY.md
 _write_configs.py
+.cptr
